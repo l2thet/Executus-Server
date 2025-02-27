@@ -29,8 +29,5 @@ WORKDIR /root/
 COPY --from=builder /app/main .
 COPY --from=builder /app/assets ./assets
 
-# Expose port 8080 to the outside world
-EXPOSE 8080
-
 # Command to run the executable
 CMD ["./main"]

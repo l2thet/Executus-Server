@@ -6,23 +6,37 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Printf("Warning: Error loading .env file: %v", err)
+	}
+
+	var addr = os.Getenv("ServerPort")
+	if addr == "" {
+		log.Fatal("ServerPort environment variable not set")
+	}
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/api/listavailablemusic", listAvailableMusic)
 
 	mux.HandleFunc("/api/servesong", serveSong)
 
+	log.Printf("Server listening on %s", addr)
+
 	server := http.Server{
-		Addr:    ":8080",
+		Addr:    addr,
 		Handler: mux,
 	}
 
 	log.Printf("Starting server on %s", server.Addr)
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
