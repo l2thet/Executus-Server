@@ -27,10 +27,10 @@ func main() {
 
 	mux.HandleFunc("/api/servesong", serveSong)
 
-	log.Printf("Server listening on %s", addr)
+	log.Printf("Server listening on port %s", addr)
 
 	server := http.Server{
-		Addr:    addr,
+		Addr:    ":" + addr,
 		Handler: mux,
 	}
 
